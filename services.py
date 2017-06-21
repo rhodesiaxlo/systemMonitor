@@ -1,4 +1,4 @@
-__author__ = 'wt0vremr'
+__author__ = 'rhodesiaxlo'
 
 import platform
 import psutil
@@ -64,10 +64,12 @@ class ServerStatus:
     def __init__(self):
         """self.memfree = int(psutil.avail_phymem()) / (1024 * 1024)"""
         self.memfree = int(psutil.virtual_memory().available) / (1024 * 1024)
-        self.memused = int(psutil.used_phymem()) / (1024 * 1024)
-        self.memcached = int(psutil.cached_phymem()) / (1024 * 1024)
+        self.memused = int(psutil.virtual_memory().used) / (1024 * 1024)
+        self.memcached = int(psutil.virtual_memory().cached) / (1024 * 1024)
         self.memtotal = self.memfree + self.memused
-        self.memload = psutil.phymem_usage()[3]
+        """self.memload = psutil.phymem_usage()[3]"""
+        self.memload = int(self.memused)/int(self.memtotal);
+        """self.memload = 0"""
         self.load = os.getloadavg()
         self.uptime = ProcParser().getuptime()
         self.coresload = psutil.cpu_percent(0.7, True)
